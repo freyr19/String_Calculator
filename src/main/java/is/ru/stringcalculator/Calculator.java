@@ -6,7 +6,7 @@ public class Calculator {
 		if(text.equals("")){
 			return 0;
 		}
-		else if(text.contains(",")) {
+		else if(text.contains(",") || text.contains("\n") )  {
 			return sum(splitNumbers(text));
 		}
 		else
@@ -19,7 +19,8 @@ public class Calculator {
 	}
 
 	private static String[] splitNumbers(String numbers){
-	   return numbers.split(",");
+	   //the regex "\W".This matches any non-word character.
+	   return numbers.split("\\W");
 	   // return numbers.split(",");
 	}
       
