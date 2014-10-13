@@ -3,6 +3,9 @@ package is.ru.stringcalculator;
 public class Calculator {
 
 	public static int add(String text){
+
+		String delimiter = ",|/n";
+    	String numbersWithoutDelimiter = text;
 		if(text.equals("")){
 			return 0;
 		}
@@ -10,6 +13,13 @@ public class Calculator {
 			return sum(splitNumbers(text));
 		
 		}
+		else if (text.startsWith("//")) {
+        int delimiterIndex = text.indexOf("//") + 2;
+        delimiter = text.substring(delimiterIndex, delimiterIndex + 1);
+        numbersWithoutDelimiter = text.substring(text.indexOf("n") + 1);
+    	return multi(numbersWithoutDelimiter, delimiter);
+    }
+    
 		else
 			return 1;
 	}
@@ -32,5 +42,14 @@ public class Calculator {
 		return total;
     }
 
-
+    private static int multi(String numbers, String delimiter) {
+    int returnValue = 0;
+    String[] numbersArray = numbers.split(delimiter);
+    for (String number : numbersArray) {
+        if (!number.trim().isEmpty()) {
+            returnValue += Integer.parseInt(number.trim());
+        }
+    }
+    return returnValue;
+	}
 }

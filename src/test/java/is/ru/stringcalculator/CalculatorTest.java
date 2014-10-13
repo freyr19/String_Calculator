@@ -38,4 +38,9 @@ public class CalculatorTest {
 	public void test3Numbers2DifferentDelimiter() {
 		assertEquals(6, Calculator.add("1,2\n3"));
 	}
+
+	@Test
+	public void testDifferentDelimiter() {
+		assertEquals(3, Calculator.add("//;\n1;2"));
+	}
 }
