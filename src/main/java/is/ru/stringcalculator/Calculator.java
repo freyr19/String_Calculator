@@ -2,9 +2,9 @@ package is.ru.stringcalculator;
 
 public class Calculator {
 
-	public static int add(String text){
+	public static int add(String text) throws Exception {
 
-		String delimiter = ",|/n";
+		String delimiter = ";|/n";
     	String numbersWithoutDelimiter = text;
 		if(text.equals("")){
 			return 0;
@@ -34,8 +34,14 @@ public class Calculator {
 	  	return numbers.split("\\W");
 	}
       
-    private static int sum(String[] numbers){
- 	    int total = 0;
+    private static int sum(String[] numbers) throws Exception{
+ 	    
+		for(String number : numbers){
+		    if (toInt(number) < 0) {
+		    	throw new Exception("Negatives not allowed: -1");
+		    }
+		}
+		int total = 0;
         for(String number : numbers){
 		    total += toInt(number);
 		}
