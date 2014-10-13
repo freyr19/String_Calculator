@@ -42,7 +42,12 @@ public class CalculatorTest {
 	@Test // 7 
 	public void testNegativeNumbers() throws Exception {
 		Calculator.add("-1");
-		//assertEquals(3, Calculator.add("1,2"));
+		//assertEquals("Negatives not allowed: -1", Calculator.add("-1"));
+	}
+
+	@Test // 8
+	public void testNumbersBiggerThan1000() throws Exception {
+		assertEquals(2, Calculator.add("1001,2"));
 	}
 
 	/*@Test
