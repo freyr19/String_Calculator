@@ -1,5 +1,8 @@
 package is.ru.stringcalculator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Calculator {
 
 	public static int add(String text) throws Exception {
@@ -26,7 +29,14 @@ public class Calculator {
 
 
 	private static int toInt(String number){
-		return Integer.parseInt(number);
+		int num = Integer.parseInt(number);
+		if (num < 0) {
+			
+		}
+		if (num > 1000) {
+			num = 0;
+		}
+		return num;
 	}
 
 	private static String[] splitNumbers(String numbers){
