@@ -4,70 +4,67 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Calculator {
-
-	public static int add(String text) throws Exception {
-
-		String delimiter = ";|/n";
-    	String numbersWithoutDelimiter = text;
-		if(text.equals("")){
-			return 0;
-		}
-		else if(text.contains(",") || text.contains("\n"))  {
-			return sum(splitNumbers(text));
+	private static String REGEX = ",|\n";
+	public static int add(String text)  {
 		
+		Matcher matcher = Pattern.compile("^//((.)|(\\[(.+?)\\])+)\n(.*)").matcher(text);
+		String number = text;
+
+		if(matcher.find()){
+			if(matcher.group(2)!= null){
+				REGEX = Pattern.quote(matcher.group(2))+"|,";
+			}
+			else
+			{
+				String delimiter = matcher.group(1);
+				Matcher delimiterMatcher = Pattern.compile("\\[(.+?)\\]").matcher(delimiter);
+				StringBuffer allDelimiter = new StringBuffer();
+				while (delimiterMatcher.find())
+				{
+					if(allDelimiter.length() == 0)
+					{
+						allDelimiter.append(Pattern.quote(delimiterMatcher.group(1)));
+					}
+					else
+					{
+						allDelimiter.append("|" + Pattern.quote(delimiterMatcher.group(1)));
+					}
+				}
+				REGEX = allDelimiter.toString()+"|,";
+			}
+			number = matcher.group(5);
 		}
-		else if (text.startsWith("//")) {
-        int delimiterIndex = text.indexOf("//") + 2;
-        delimiter = text.substring(delimiterIndex, delimiterIndex + 1);
-        numbersWithoutDelimiter = text.substring(text.indexOf("n") + 1);
-    	return multi(numbersWithoutDelimiter, delimiter);
-    }
-    
+		return Sum(getNumber(number));
+	}
+
+
+	public static int convertInt(String num, StringBuffer negative){
+		int number = Integer.parseInt(num);
+		if(number < 0) negative.append(" "+number);
+		if(number >= 1000) number = 0;
+		return number;
+	}
+	public static String[] getNumber(String number){
+		if(number.isEmpty())
+		{
+			return new String[0];
+		}
 		else
-			return 1;
+		{
+			return number.split(REGEX);
+		}
+	}
+	public static int Sum(String[] numbers){
+		int sum = 0;
+		StringBuffer negative = new StringBuffer();
+		for(String temp : numbers){
+			sum += convertInt(temp,negative);
+		}
+		if (negative.length()>0) throw new RuntimeException("Negatives not allowed:" + negative);
+			return sum;
+		}
 	}
 
 
-	private static int toInt(String number){
-		int num = Integer.parseInt(number);
-		if (num < 0) {
-			
-		}
-		if (num > 1000) {
-			num = 0;
-		}
-		return num;
-	}
 
-	private static String[] splitNumbers(String numbers){
-	   //the regex "\W".This matches any non-word character.
-	  	return numbers.split("\\W");
-	}
-      
-    private static int sum(String[] numbers) throws Exception{
- 	    
-		for(String number : numbers){
-		    if (toInt(number) < 0) {
-		    	throw new Exception("Negatives not allowed: -1");
-		    }
-		}
-		int total = 0;
-        for(String number : numbers){
-        	
-        		total += toInt(number);
-        	
-		}
-		return total;
-    }
 
-    private static int multi(String numbers, String delimiter) {
-    int returnValue = 0;
-    String[] numbersArray = numbers.split(delimiter);
-    for (String number : numbersArray) {
-        if (!number.trim().isEmpty()) {
-            returnValue += Integer.parseInt(number.trim());
-        }
-    }
-    return returnValue;
-	}
-}
