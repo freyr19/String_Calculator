@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 public class Calculator {
 	private static String REGEX = ",|\n";
+	
 	public static int add(String text)  {
 		
 		Matcher matcher = Pattern.compile("^//((.)|(\\[(.+?)\\])+)\n(.*)").matcher(text);
