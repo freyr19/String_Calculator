@@ -42,6 +42,12 @@ public class CalculatorTest {
 		expectedEx.expectMessage("Negatives not allowed: -1");
 		assertEquals(2, Calculator.add("-1,2"));
 	}
+	@Test // 7
+	public void testMultiNegativeNumbers()  {
+		expectedEx.expectMessage("Negatives not allowed: -4 -5");
+		assertEquals(2, Calculator.add("2,-4,3,-5"));
+	}
+
 	@Test // 8
 	public void testNumbersBiggerThan1000()  {
 		assertEquals(2, Calculator.add("1001,2"));
